@@ -1,3 +1,6 @@
+# AWS Lamda zip file
+lambda/lambda.zip
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
