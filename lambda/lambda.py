@@ -1,10 +1,9 @@
-import os
-
 import boto3
 
 from PIL import Image
 
 s3 = boto3.client('s3')
+
 
 def handler(event, context):
     bucket = event['Records'][0]['s3']['bucket']['name']

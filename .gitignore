@@ -1,9 +1,9 @@
 ## Python
-
 # AWS Lamda zip file
 lambda/lambda.zip
 # Virtual Environments
 venv/
+venv-docker/
 
 ## Terraform
 

@@ -1,27 +1,17 @@
 #!/usr/bin/env bash
 
 CURRENT_DIR=$(pwd)
+cd "$(dirname $(realpath "$0"))" || exit 1
 
-# Path of current script
-BASEDIR=$(dirname $(realpath "$0"))
-
-# Create venv if not exists and active it
-if [ ! -d "${BASEDIR}/venv/" ]; then
-  echo -e "⚠️ virtualenv is not present (${BASEDIR}/venv/ doesn't exists"
-  virtualenv -p "$(which python3)" "${BASEDIR}/venv/"
-  # shellcheck source=venv/bin/activate
-  source "${BASEDIR}/venv/bin/activate"
+if ! command -v docker &>/dev/null; then
+  echo "⚠️ You need Docker to build the ZIP lambda function"
 fi
 
-# Install dependencies
-pip install -r "${BASEDIR}/requirements.txt"
+docker run --rm \
+  -w /build \
+  -v "$PWD:/build" \
+  --entrypoint /build/entrypoint.sh \
+  lambci/lambda:build-python3.8
 
-# Create zip file (for AWS)
-ZIP_FILE="${BASEDIR}/lambda.zip"
-cd "${BASEDIR}/venv/lib/python3.8/site-packages" || exit 1
-zip -9 -r "${ZIP_FILE}" .
-cd "${BASEDIR}/src" || exit 1
-zip -9 -r -g "${ZIP_FILE}" .
-
-# Go back to BASEDIR
+# Go back to origin directory
 cd "$CURRENT_DIR" || exit 1

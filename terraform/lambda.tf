@@ -7,7 +7,7 @@ resource "aws_lambda_function" "create_thumbnail" {
     timeout = 60
     memory_size = 128
     role = aws_iam_role.lambda_create_thumbnail_role.arn
-    handler = "create-thumbnail.handler"
+    handler = "lambda.handler"
 }
 
 resource "aws_lambda_permission" "allow_transcode_bucket" {
