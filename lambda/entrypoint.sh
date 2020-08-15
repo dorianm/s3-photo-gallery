@@ -1,17 +1,16 @@
 #!/usr/bin/env bash
 
 BASE_DIR="$(dirname $(realpath "$0"))"
-VENV="docker-venv"
-SITE_PACKAGES="${BASE_DIR}/${VENV}/lib/python3.8/site-packages"
+PACKAGE_DIR="${BASE_DIR}/package"
+ZIP_FILE="${BASE_DIR}/lambda.zip"
 
-python -m venv "${VENV}"
+mkdir -p "$PACKAGE_DIR" && cd "$PACKAGE_DIR" || exit 1
+cp "${BASE_DIR}/lambda.py" "${PACKAGE_DIR}/"
+pip install -r "${BASE_DIR}/requirements.txt" -t ./
 
-pip install --upgrade pip
-pip install -r requirements.txt
+if [ -f "$ZIP_FILE" ]; then
+  rm "$ZIP_FILE"
+fi
 
-cp lambda.py "$SITE_PACKAGES"
-cd "$SITE_PACKAGES" || exit 1
-
-zip -9qr "${BASE_DIR}/lambda.zip" .
-
-rm -r "${BASE_DIR}/${VENV}"
+zip -9qr "$ZIP_FILE" .
+rm -r "$PACKAGE_DIR"
