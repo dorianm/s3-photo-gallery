@@ -1,2 +1,3 @@
 # lambda-thumbnail-generator
-AWS Lambda to generate thumbnail on S3 bucket
+
+Simple AWS S3 photo gallery with Python lambda to generate thumbnail
