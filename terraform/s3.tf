@@ -23,10 +23,39 @@ resource "aws_s3_bucket_notification" "assets_bucket_notification" {
     }
 }
 
+resource "aws_s3_bucket_policy" "assets_bucket_public" {
+    bucket = aws_s3_bucket.assets.id
+    policy = <<EOF
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "AllowPublicRead",
+            "Effect": "Allow",
+            "Principal": {
+                "AWS": "*"
+            },
+            "Action": "s3:GetObject",
+            "Resource": "${aws_s3_bucket.assets.arn}/*"
+        }
+    ]
+}
+EOF
+}
+
+data "template_file" "tmpl_index_html" {
+    template = file("../gallery/index.html")
+    vars = {
+        "tf_aws_region" = aws_s3_bucket.assets.region
+        "tf_s3_bucket_name" = aws_s3_bucket.assets.id
+        "gallery_title" = var.gallery_title
+    }
+}
+
 resource "aws_s3_bucket_object" "index-html" {
     bucket = aws_s3_bucket.assets.id
-    acl = "public-read"
     key    = "index.html"
-    source = "../gallery/index.html"
-    etag = filemd5("../gallery/index.html")
+    content = data.template_file.tmpl_index_html.rendered
+    etag = md5(data.template_file.tmpl_index_html.rendered)
+    content_type = "text/html"
 }

@@ -4,7 +4,7 @@ from PIL import Image
 
 S3 = boto3.client('s3')
 
-THUMBNAIL_SIZE = 128, 128
+THUMBNAIL_SIZE = 400, 400
 
 THUMBNAIL_PREFIX = "thumb_"
 

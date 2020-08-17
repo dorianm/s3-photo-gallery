@@ -1,3 +1,9 @@
 variable "s3_bucket_name" {
-  default = "my-bucket"
+  type = string
+  description = "The S3 bucket name"
+}
+
+variable "gallery_title" {
+  type = string
+  description = "The gallery title (HTML title tag)"
 }
