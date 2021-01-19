@@ -1,4 +1,4 @@
-# lambda-thumbnail-generator
+# s3-photo-gallery
 
 Simple AWS S3 photo gallery with a Python lambda function to generate thumbnail
 
