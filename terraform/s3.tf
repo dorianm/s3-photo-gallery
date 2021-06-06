@@ -59,3 +59,9 @@ resource "aws_s3_bucket_object" "index-html" {
   etag         = md5(data.template_file.tmpl_index_html.rendered)
   content_type = "text/html"
 }
+
+resource "aws_s3_bucket_object" "content-file" {
+  bucket = aws_s3_bucket.assets.id
+  key    = "content.json"
+  source = "empty-content.json"
+}
