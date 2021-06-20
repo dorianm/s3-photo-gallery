@@ -43,20 +43,11 @@ resource "aws_s3_bucket_policy" "assets_bucket_public" {
 EOF
 }
 
-data "template_file" "tmpl_index_html" {
-  template = file("../gallery/index.html")
-  vars = {
-    "tf_aws_region"     = aws_s3_bucket.assets.region
-    "tf_s3_bucket_name" = aws_s3_bucket.assets.id
-    "gallery_title"     = var.gallery_title
-  }
-}
-
 resource "aws_s3_bucket_object" "index-html" {
   bucket       = aws_s3_bucket.assets.id
   key          = "index.html"
-  content      = data.template_file.tmpl_index_html.rendered
-  etag         = md5(data.template_file.tmpl_index_html.rendered)
+  content = file("../gallery/index.html")
+  etag         = file("../gallery/index.html")
   content_type = "text/html"
 }
 
